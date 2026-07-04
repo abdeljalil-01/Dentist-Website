@@ -1,0 +1,9 @@
+{
+  "name": "Lumine Dental Studio",
+  "short_name": "Lumine",
+  "description": "Healthy Smiles. Modern Dentistry.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F8FAFC",
+  "theme_color": "#2563EB"
+}
