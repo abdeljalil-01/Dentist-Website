@@ -1,25 +1,28 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Facebook, Instagram, Linkedin, Mail, Send } from "lucide-react";
 import { navItems, services } from "@/data/site";
 import { Button } from "@/components/ui/button";
 
 export function Footer() {
   return (
-    <footer className="border-t border-brand-border bg-brand-ink text-white">
-      <div className="container-page py-16">
+    <footer className="relative overflow-hidden border-t border-brand-border bg-brand-ink text-white">
+      <div className="pointer-events-none absolute -right-24 top-10 h-72 w-72 rounded-full bg-brand-blue/20 blur-3xl" />
+      <div className="pointer-events-none absolute left-10 top-24 h-56 w-56 rounded-full bg-brand-gold/10 blur-3xl" />
+      <div className="container-page relative py-16 sm:py-20">
         <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr_0.8fr_1fr]">
           <div>
-            <Link href="#home" className="inline-flex items-center gap-3">
-              <span className="grid h-12 w-12 place-items-center rounded-full bg-white text-brand-ink">
-                <span className="h-4 w-4 rounded-full border-2 border-brand-blue" />
+            <Link href="#home" className="inline-flex items-center gap-4" aria-label="Lumine Dental Studio home">
+              <span className="grid h-16 w-16 place-items-center overflow-hidden rounded-full bg-black shadow-gold ring-1 ring-brand-gold/20">
+                <Image src="/favicon.png" alt="" width={64} height={64} className="h-full w-full object-cover" />
               </span>
-              <span>
-                <span className="block text-lg font-black">Lumine Dental Studio</span>
-                <span className="block text-sm text-slate-300">Healthy Smiles. Modern Dentistry.</span>
+              <span className="leading-tight">
+                <span className="block font-serif text-2xl font-semibold">Lumine</span>
+                <span className="block text-xs font-bold uppercase tracking-[0.28em] text-slate-300">Dental Studio</span>
               </span>
             </Link>
             <p className="mt-6 max-w-sm leading-7 text-slate-300">
-              A modern dental studio blending clinical precision, quiet luxury, and human-centered care.
+              Healthy Smiles. Exceptional Care. A boutique dental studio blending clinical precision, quiet luxury, and human-centered care.
             </p>
             <div className="mt-6 flex gap-3">
               {[Instagram, Facebook, Linkedin].map((Icon) => (

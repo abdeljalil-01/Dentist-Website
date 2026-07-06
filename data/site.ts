@@ -34,6 +34,14 @@ export const imageLibrary = {
     "https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=1400&q=85",
   diagnostics:
     "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&w=1200&q=85",
+  whitening:
+    "https://images.unsplash.com/photo-1609840114035-3c981b782dfe?auto=format&fit=crop&w=1200&q=85",
+  aligners:
+    "https://images.unsplash.com/photo-1598256989800-fe5f95da9787?auto=format&fit=crop&w=1200&q=85",
+  pediatric:
+    "https://images.unsplash.com/photo-1606811971618-4486d14f3f99?auto=format&fit=crop&w=1200&q=85",
+  emergency:
+    "https://images.unsplash.com/photo-1581594693702-fbdc51b2763b?auto=format&fit=crop&w=1200&q=85",
   doctorOne:
     "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=900&q=85",
   doctorTwo:
@@ -60,14 +68,14 @@ export type Service = {
 export const services: Service[] = [
   {
     title: "General Dentistry",
-    description: "Preventive exams, cleanings, fillings, and everyday care designed around long-term oral health.",
+    description: "Preventive exams, cleanings, fillings, and everyday care paced around long-term oral health.",
     icon: Smile,
     image: imageLibrary.studio,
     accent: "bg-blue-50 text-blue-600"
   },
   {
     title: "Cosmetic Dentistry",
-    description: "Natural veneers, bonding, and smile design with a refined, face-led aesthetic.",
+    description: "Natural veneers, bonding, and smile design shaped around your face, shade, and confidence.",
     icon: Sparkles,
     image: imageLibrary.hero,
     accent: "bg-sky-50 text-sky-600"
@@ -90,28 +98,28 @@ export const services: Service[] = [
     title: "Orthodontics",
     description: "Clear aligner and bite correction plans that fit your schedule and smile goals.",
     icon: Activity,
-    image: imageLibrary.hero,
+    image: imageLibrary.aligners,
     accent: "bg-violet-50 text-violet-600"
   },
   {
     title: "Pediatric Dentistry",
     description: "Gentle, confidence-building visits for children with preventive guidance for parents.",
     icon: HeartPulse,
-    image: imageLibrary.studio,
+    image: imageLibrary.pediatric,
     accent: "bg-rose-50 text-rose-600"
   },
   {
     title: "Emergency Care",
     description: "Same-day support for tooth pain, broken restorations, swelling, and dental trauma.",
     icon: Zap,
-    image: imageLibrary.hero,
+    image: imageLibrary.emergency,
     accent: "bg-amber-50 text-amber-600"
   },
   {
     title: "Teeth Whitening",
     description: "Clinician-supervised whitening for a brighter smile without unnecessary sensitivity.",
     icon: WandSparkles,
-    image: imageLibrary.studio,
+    image: imageLibrary.whitening,
     accent: "bg-teal-50 text-teal-600"
   }
 ];

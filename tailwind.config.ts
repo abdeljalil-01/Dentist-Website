@@ -13,18 +13,21 @@ const config: Config = {
         brand: {
           blue: "#2563EB",
           sky: "#38BDF8",
+          gold: "#D4AF37",
           ink: "#0F172A",
           text: "#1E293B",
-          border: "#E2E8F0",
+          border: "#E5E7EB",
           page: "#F8FAFC"
         }
       },
       boxShadow: {
-        soft: "0 20px 60px rgba(15, 23, 42, 0.08)",
-        glow: "0 28px 80px rgba(37, 99, 235, 0.22)"
+        soft: "0 24px 70px rgba(15, 23, 42, 0.09)",
+        glow: "0 30px 90px rgba(37, 99, 235, 0.18)",
+        gold: "0 18px 60px rgba(212, 175, 55, 0.16)"
       },
       fontFamily: {
-        sans: ["var(--font-inter)", "Inter", "ui-sans-serif", "system-ui"]
+        sans: ["var(--font-inter)", "Inter", "ui-sans-serif", "system-ui"],
+        serif: ["var(--font-playfair)", "Playfair Display", "ui-serif", "Georgia"]
       },
       borderRadius: {
         "2xl": "1.25rem",

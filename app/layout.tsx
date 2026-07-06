@@ -1,19 +1,32 @@
 import type { Metadata } from "next";
+import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
 const siteUrl = "https://lumine-dental-studio.example.com";
 
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap"
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair",
+  display: "swap"
+});
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Lumine Dental Studio | Healthy Smiles. Modern Dentistry.",
+    default: "Lumine Dental Studio | Healthy Smiles. Exceptional Care.",
     template: "%s | Lumine Dental Studio"
   },
   description:
-    "A premium modern dental clinic offering cosmetic dentistry, implants, emergency care, pediatric dentistry, whitening, and digital smile design.",
+    "A boutique dental studio offering cosmetic dentistry, implants, emergency care, pediatric dentistry, whitening, and digital smile design.",
   keywords: [
     "Lumine Dental Studio",
-    "modern dental clinic",
+    "boutique dental studio",
     "cosmetic dentistry",
     "dental implants",
     "emergency dentist",
@@ -21,7 +34,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: "Lumine Dental Studio",
-    description: "Healthy Smiles. Modern Dentistry.",
+    description: "Healthy Smiles. Exceptional Care.",
     url: siteUrl,
     siteName: "Lumine Dental Studio",
     images: [
@@ -38,11 +51,15 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Lumine Dental Studio",
-    description: "Healthy Smiles. Modern Dentistry.",
+    description: "Healthy Smiles. Exceptional Care.",
     images: ["/og-image.png"]
   },
   icons: {
-    icon: "/favicon.svg"
+    icon: [
+      { url: "/favicon.png", type: "image/png" },
+      { url: "/favicon.svg", type: "image/svg+xml" }
+    ],
+    apple: "/apple-touch-icon.png"
   },
   manifest: "/site.webmanifest"
 };
@@ -51,7 +68,7 @@ const structuredData = {
   "@context": "https://schema.org",
   "@type": "Dentist",
   name: "Lumine Dental Studio",
-  image: `${siteUrl}/og-image.png`,
+  image: `${siteUrl}/lumine-logo.png`,
   url: siteUrl,
   telephone: "+1-415-555-0198",
   email: "hello@luminedental.studio",
@@ -88,7 +105,7 @@ const structuredData = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body>
+      <body className={`${inter.variable} ${playfair.variable}`}>
         <script
           type="application/ld+json"
           suppressHydrationWarning

@@ -2,32 +2,41 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useForm as useFormspreeForm } from "@formspree/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useEmblaCarousel from "embla-carousel-react";
 import { AnimatePresence, motion } from "framer-motion";
 import CountUp from "react-countup";
 import {
   ArrowRight,
+  ArrowUpRight,
+  AlertCircle,
   Award,
+  BadgeCheck,
   CalendarCheck,
-  Check,
+  CheckCircle2,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
   Clock3,
+  Gem,
+  HeartHandshake,
+  LoaderCircle,
+  Navigation,
+  PanelTopOpen,
   ExternalLink,
   Instagram,
   Linkedin,
   Mail,
-  MapPin,
   Phone,
+  Quote,
   ShieldCheck,
   Sparkles,
   Star,
   X
 } from "lucide-react";
-import { useCallback, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useCallback, useEffect, useState } from "react";
+import { useForm as useHookForm } from "react-hook-form";
 import { z } from "zod";
 import { fadeUp, scaleIn, staggerContainer } from "@/animations/variants";
 import {
@@ -58,6 +67,9 @@ const bookingSchema = z.object({
 });
 
 type BookingValues = z.infer<typeof bookingSchema>;
+type BookingSubmission = BookingValues & {
+  _subject: string;
+};
 
 const inputMotion = {
   whileFocus: { scale: 1.01 },
@@ -77,20 +89,21 @@ function Stars() {
 export function HeroSection() {
   return (
     <section id="home" className="relative min-h-screen overflow-hidden pt-32 sm:pt-36">
-      <div className="pointer-events-none absolute left-[8%] top-32 h-24 w-24 rounded-full border border-blue-200/70" />
-      <div className="pointer-events-none absolute bottom-28 right-[9%] h-16 w-16 rounded-full bg-sky-200/35 blur-sm" />
-      <div className="container-page grid items-center gap-12 pb-20 lg:grid-cols-[0.98fr_1.02fr]">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-gold/40 to-transparent" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(15,23,42,0.035)_1px,transparent_1px),linear-gradient(180deg,rgba(15,23,42,0.035)_1px,transparent_1px)] bg-[size:72px_72px] [mask-image:linear-gradient(to_bottom,black,transparent_82%)]" />
+      <div className="pointer-events-none absolute left-[10%] top-44 hidden h-40 w-px bg-gradient-to-b from-transparent via-brand-gold/45 to-transparent lg:block" />
+      <div className="container-page relative grid items-center gap-12 pb-20 lg:grid-cols-[0.92fr_1.08fr]">
         <motion.div initial="hidden" animate="visible" variants={staggerContainer}>
           <motion.p className="eyebrow mb-6" variants={fadeUp}>
-            Premium digital dental care
+            Boutique dental studio
           </motion.p>
           <motion.h1 className="heading-1" variants={fadeUp}>
             Healthy Smiles.
-            <span className="block text-brand-blue">Modern Dentistry.</span>
+            <span className="block text-brand-blue">Exceptional Care.</span>
           </motion.h1>
           <motion.p className="mt-7 max-w-xl text-lg leading-8 text-slate-600" variants={fadeUp}>
-            Lumine Dental Studio brings boutique hospitality and advanced clinical precision into one calm,
-            highly personalized dental experience.
+            Lumine Dental Studio pairs refined hospitality with precise digital dentistry, creating visits that feel calm,
+            personal, and beautifully considered from the first conversation.
           </motion.p>
 
           <motion.div className="mt-8 flex flex-col gap-3 sm:flex-row" variants={fadeUp}>
@@ -104,33 +117,65 @@ export function HeroSection() {
           </motion.div>
 
           <motion.div className="mt-8 flex flex-wrap gap-3" variants={fadeUp}>
-            {["Same-day emergencies", "Digital scans", "Comfort-first care"].map((badge) => (
+            {["Same-day emergencies", "Digital smile planning", "Comfort-first care"].map((badge) => (
               <span
                 key={badge}
                 className="inline-flex items-center gap-2 rounded-full border border-brand-border bg-white px-4 py-2 text-sm font-bold text-slate-600 shadow-sm"
               >
-                <Check className="h-4 w-4 text-brand-blue" />
+                <BadgeCheck className="h-4 w-4 text-brand-blue" />
                 {badge}
               </span>
             ))}
           </motion.div>
 
-          <motion.div className="mt-10 grid max-w-xl grid-cols-3 overflow-hidden rounded-[1.75rem] border border-brand-border bg-white shadow-soft" variants={fadeUp}>
+          <motion.div className="mt-10 grid max-w-xl grid-cols-3 overflow-hidden rounded-[1.75rem] border border-brand-border bg-white/85 shadow-soft backdrop-blur" variants={fadeUp}>
             {trustStats.slice(0, 3).map((stat) => (
               <div key={stat.label} className="border-r border-brand-border p-5 last:border-r-0">
-                <p className="text-2xl font-black text-brand-ink">
+                <p className="font-serif text-3xl font-semibold text-brand-ink">
                   <CountUp end={stat.value} duration={2.4} enableScrollSpy scrollSpyOnce />
                   {stat.suffix}
                 </p>
-                <p className="mt-1 text-xs font-bold uppercase tracking-[0.12em] text-slate-400">{stat.label}</p>
+                <p className="mt-1 text-xs font-bold uppercase tracking-[0.12em] text-slate-500">{stat.label}</p>
               </div>
             ))}
+          </motion.div>
+
+          <motion.div className="mt-8 flex items-center gap-4" variants={fadeUp}>
+            <div className="flex -space-x-3">
+              {[imageLibrary.doctorOne, imageLibrary.doctorTwo, imageLibrary.doctorThree].map((src) => (
+                <span key={src} className="relative h-11 w-11 overflow-hidden rounded-full border-2 border-white bg-white shadow-sm">
+                  <Image src={src} alt="" fill sizes="44px" className="object-cover" />
+                </span>
+              ))}
+            </div>
+            <div>
+              <Stars />
+              <p className="mt-1 text-sm font-bold text-slate-600">Google reviews from 1,000+ patients</p>
+            </div>
           </motion.div>
         </motion.div>
 
         <motion.div className="relative min-h-[580px]" initial="hidden" animate="visible" variants={scaleIn}>
+          {[
+            "left-[16%] top-[10%]",
+            "left-[28%] top-[24%]",
+            "left-[42%] top-[12%]",
+            "left-[58%] top-[30%]",
+            "left-[74%] top-[18%]",
+            "left-[22%] top-[62%]",
+            "left-[46%] top-[78%]",
+            "left-[68%] top-[66%]",
+            "left-[82%] top-[48%]"
+          ].map((position, index) => (
+            <motion.span
+              key={position}
+              className={cn("absolute z-0 h-1.5 w-1.5 rounded-full bg-brand-blue/25", position)}
+              animate={{ y: [0, -14, 0], opacity: [0.25, 0.8, 0.25] }}
+              transition={{ duration: 4 + index * 0.25, repeat: Infinity, ease: "easeInOut" }}
+            />
+          ))}
           <motion.div
-            className="absolute -left-2 top-12 z-20 rounded-3xl border border-white/80 bg-white/85 p-4 shadow-soft backdrop-blur-xl sm:left-4"
+            className="absolute -left-2 top-12 z-20 rounded-3xl border border-white/80 bg-white/90 p-4 shadow-soft backdrop-blur-xl sm:left-4"
             animate={{ y: [0, -10, 0] }}
             transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
           >
@@ -146,7 +191,7 @@ export function HeroSection() {
           </motion.div>
 
           <motion.div
-            className="absolute -right-2 bottom-24 z-20 rounded-3xl border border-white/80 bg-white/88 p-4 shadow-soft backdrop-blur-xl sm:right-6"
+            className="absolute -right-2 bottom-24 z-20 rounded-3xl border border-white/80 bg-white/90 p-4 shadow-soft backdrop-blur-xl sm:right-6"
             animate={{ y: [0, 12, 0] }}
             transition={{ duration: 5.6, repeat: Infinity, ease: "easeInOut" }}
           >
@@ -155,8 +200,22 @@ export function HeroSection() {
             <p className="text-xs font-semibold text-slate-500">From 1,000+ patients</p>
           </motion.div>
 
-          <div className="absolute inset-x-6 top-10 h-[520px] rounded-[3rem] bg-brand-blue/10 blur-3xl" />
-          <div className="relative mx-auto h-[560px] max-w-[520px] overflow-hidden rounded-[3rem] border border-white bg-white p-3 shadow-glow">
+          <motion.div
+            className="absolute bottom-7 left-8 z-20 hidden rounded-3xl border border-white/70 bg-brand-ink/90 p-5 text-white shadow-soft backdrop-blur-xl sm:block"
+            animate={{ y: [0, 10, 0] }}
+            transition={{ duration: 6.2, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <div className="flex items-center gap-3">
+              <Gem className="h-5 w-5 text-brand-gold" />
+              <div>
+                <p className="text-sm font-black">15+ years</p>
+                <p className="text-xs text-slate-300">Boutique clinical care</p>
+              </div>
+            </div>
+          </motion.div>
+
+          <div className="absolute inset-x-8 top-10 h-[520px] rounded-[3rem] border border-brand-blue/10 bg-brand-blue/10 blur-2xl" />
+          <div className="relative mx-auto h-[560px] max-w-[540px] overflow-hidden rounded-[3rem] border border-white bg-white p-3 shadow-glow">
             <Image
               src={imageLibrary.hero}
               alt="Dentist reviewing a digital scan with a patient"
@@ -165,7 +224,7 @@ export function HeroSection() {
               sizes="(min-width: 1024px) 48vw, 100vw"
               className="rounded-[2.35rem] object-cover"
             />
-            <div className="absolute inset-x-6 bottom-6 rounded-[2rem] border border-white/60 bg-white/82 p-5 shadow-soft backdrop-blur-xl">
+            <div className="absolute inset-x-6 bottom-6 rounded-[2rem] border border-white/60 bg-white/85 p-5 shadow-soft backdrop-blur-xl">
               <div className="flex items-center justify-between gap-5">
                 <div>
                   <p className="text-sm font-black text-brand-ink">Patient satisfaction</p>
@@ -214,6 +273,17 @@ export function TrustedSection() {
 }
 
 export function ServicesSection() {
+  const serviceLayouts = [
+    "md:col-span-4 lg:col-span-3 md:row-span-2",
+    "md:col-span-4 lg:col-span-3",
+    "md:col-span-3 lg:col-span-2",
+    "md:col-span-5 lg:col-span-4",
+    "md:col-span-4 lg:col-span-4",
+    "md:col-span-4 lg:col-span-2",
+    "md:col-span-3 lg:col-span-3",
+    "md:col-span-5 lg:col-span-3"
+  ];
+
   return (
     <SectionShell
       id="services"
@@ -222,40 +292,50 @@ export function ServicesSection() {
       copy="From preventive care to complex smile restoration, each service is delivered with digital planning, quiet comfort, and a refined clinical standard."
     >
       <motion.div
-        className="container-page grid gap-5 sm:grid-cols-2 lg:grid-cols-4"
+        className="container-page grid auto-rows-[minmax(260px,auto)] gap-5 md:grid-cols-8 lg:grid-cols-12"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
         variants={staggerContainer}
       >
-        {services.map((service) => {
+        {services.map((service, index) => {
           const Icon = service.icon;
+          const featured = index === 0 || index === 3 || index === 4;
           return (
             <motion.article
               key={service.title}
-              className="group overflow-hidden rounded-[1.75rem] border border-brand-border bg-white shadow-soft transition duration-300 hover:-translate-y-2 hover:shadow-glow"
+              className={cn(
+                "group relative overflow-hidden rounded-[2rem] border border-white bg-white shadow-soft transition duration-500 hover:-translate-y-2 hover:shadow-glow",
+                serviceLayouts[index]
+              )}
               variants={fadeUp}
             >
-              <div className="relative h-48 overflow-hidden">
+              <div className={cn("relative overflow-hidden", featured ? "h-72 md:h-full" : "h-56")}>
                 <Image
                   src={service.image}
                   alt={service.title}
                   fill
-                  sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+                  sizes="(min-width: 1024px) 34vw, (min-width: 768px) 50vw, 100vw"
                   className="object-cover transition duration-700 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-brand-ink/35 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-brand-ink/78 via-brand-ink/22 to-transparent" />
               </div>
-              <div className="p-6">
-                <span className={cn("grid h-12 w-12 place-items-center rounded-2xl", service.accent)}>
+              <div className={cn("absolute inset-x-0 bottom-0 p-5 text-white sm:p-6", featured && "sm:p-8")}>
+                <span className="grid h-12 w-12 place-items-center rounded-2xl border border-white/20 bg-white/15 text-white shadow-soft backdrop-blur-xl">
                   <Icon className="h-5 w-5" />
                 </span>
-                <h3 className="mt-5 text-lg font-black text-brand-ink">{service.title}</h3>
-                <p className="mt-3 min-h-24 text-sm leading-7 text-slate-600">{service.description}</p>
-                <Link href="#appointment" className="mt-5 inline-flex items-center gap-2 text-sm font-black text-brand-blue">
-                  Learn More
-                  <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
+                <div className={cn("mt-5", featured && "max-w-lg")}>
+                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-blue-100">Lumine care {String(index + 1).padStart(2, "0")}</p>
+                  <h3 className="mt-2 font-serif text-2xl font-semibold leading-tight sm:text-3xl">{service.title}</h3>
+                  <p className="mt-3 max-w-xl text-sm leading-7 text-slate-100">{service.description}</p>
+                </div>
+                <Link href="#appointment" className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/15 px-4 py-2 text-sm font-black text-white backdrop-blur-xl transition hover:bg-white hover:text-brand-blue">
+                  Plan visit
+                  <ArrowUpRight className="h-4 w-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </Link>
+              </div>
+              <div className="pointer-events-none absolute right-5 top-5 rounded-full border border-white/20 bg-white/12 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-white opacity-0 backdrop-blur-xl transition duration-300 group-hover:opacity-100">
+                Digital-first
               </div>
             </motion.article>
           );
@@ -430,14 +510,21 @@ export function AppointmentSection() {
             Share a few details and our concierge team will confirm availability, preparation notes, and expected visit length.
           </motion.p>
           <motion.div className="mt-8 grid gap-4" variants={staggerContainer}>
-            {["Flexible appointment windows", "Transparent treatment guidance", "Urgent care availability"].map((benefit) => (
-              <motion.div key={benefit} className="flex items-center gap-3" variants={fadeUp}>
+            {[
+              { icon: PanelTopOpen, label: "Flexible appointment windows" },
+              { icon: HeartHandshake, label: "Transparent treatment guidance" },
+              { icon: ShieldCheck, label: "Urgent care availability" }
+            ].map((benefit) => {
+              const Icon = benefit.icon;
+              return (
+              <motion.div key={benefit.label} className="flex items-center gap-3" variants={fadeUp}>
                 <span className="grid h-9 w-9 place-items-center rounded-full bg-white/10 text-sky-200">
-                  <Check className="h-4 w-4" />
+                  <Icon className="h-4 w-4" />
                 </span>
-                <span className="font-semibold text-slate-200">{benefit}</span>
+                <span className="font-semibold text-slate-200">{benefit.label}</span>
               </motion.div>
-            ))}
+              );
+            })}
           </motion.div>
           <motion.div className="mt-10 grid gap-4 sm:grid-cols-2" variants={fadeUp}>
             <a href="tel:+14155550198" className="rounded-[1.5rem] border border-white/10 bg-white/5 p-5">
@@ -460,13 +547,13 @@ export function AppointmentSection() {
 }
 
 function BookingForm() {
-  const [submitted, setSubmitted] = useState(false);
+  const [formspreeState, submitToFormspree, resetFormspree] = useFormspreeForm<BookingSubmission>("mjgjregz");
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset
-  } = useForm<BookingValues>({
+  } = useHookForm<BookingValues>({
     resolver: zodResolver(bookingSchema),
     defaultValues: {
       name: "",
@@ -480,12 +567,23 @@ function BookingForm() {
     }
   });
 
-  async function onSubmit() {
-    await new Promise((resolve) => setTimeout(resolve, 650));
-    setSubmitted(true);
-    reset();
-    window.setTimeout(() => setSubmitted(false), 4200);
+  useEffect(() => {
+    if (formspreeState.succeeded) {
+      reset();
+      const timeout = window.setTimeout(() => resetFormspree(), 5200);
+      return () => window.clearTimeout(timeout);
+    }
+    return undefined;
+  }, [formspreeState.succeeded, reset, resetFormspree]);
+
+  async function onSubmit(values: BookingValues) {
+    await submitToFormspree({
+      ...values,
+      _subject: "New Lumine Dental Studio appointment request"
+    });
   }
+
+  const submitting = isSubmitting || formspreeState.submitting;
 
   return (
     <motion.div
@@ -496,29 +594,51 @@ function BookingForm() {
       transition={{ duration: 0.7 }}
     >
       <AnimatePresence>
-        {submitted ? (
+        {formspreeState.succeeded ? (
           <motion.div
-            className="mb-5 rounded-[1.5rem] border border-emerald-200 bg-emerald-50 p-4 text-sm font-bold text-emerald-700"
+            className="mb-5 flex items-center gap-4 rounded-[1.5rem] border border-emerald-200 bg-emerald-50 p-4 text-sm font-bold text-emerald-700"
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
+            role="status"
           >
-            Your request was received. Our team will confirm your appointment shortly.
+            <span className="grid h-12 w-12 shrink-0 place-items-center overflow-hidden rounded-full bg-brand-ink">
+              <Image src="/favicon.png" alt="" width={48} height={48} className="h-full w-full object-cover" />
+            </span>
+            <span className="grid min-w-0 gap-1">
+              <span className="block text-brand-ink">Your request was received.</span>
+              <span className="inline-flex items-center gap-2 font-semibold text-emerald-700">
+                <CheckCircle2 className="h-4 w-4" />
+                Our concierge team will confirm your appointment shortly.
+              </span>
+            </span>
+          </motion.div>
+        ) : null}
+        {formspreeState.errors ? (
+          <motion.div
+            className="mb-5 flex items-center gap-3 rounded-[1.5rem] border border-rose-200 bg-rose-50 p-4 text-sm font-bold text-rose-700"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            role="alert"
+          >
+            <AlertCircle className="h-5 w-5" />
+            We could not send your request. Please check your details or call the studio.
           </motion.div>
         ) : null}
       </AnimatePresence>
       <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4 sm:grid-cols-2">
-        <FieldShell label="Name" error={errors.name}>
-          <motion.input {...inputMotion} className={fieldClassName} placeholder="Your full name" {...register("name")} />
+        <FieldShell label="Full Name" error={errors.name}>
+          <motion.input {...inputMotion} className={fieldClassName} placeholder="Your full name" autoComplete="name" aria-invalid={Boolean(errors.name)} {...register("name")} />
         </FieldShell>
         <FieldShell label="Phone" error={errors.phone}>
-          <motion.input {...inputMotion} className={fieldClassName} placeholder="+1 415 555 0198" {...register("phone")} />
+          <motion.input {...inputMotion} className={fieldClassName} placeholder="+1 415 555 0198" autoComplete="tel" aria-invalid={Boolean(errors.phone)} {...register("phone")} />
         </FieldShell>
         <FieldShell label="Email" error={errors.email}>
-          <motion.input {...inputMotion} className={fieldClassName} placeholder="you@example.com" {...register("email")} />
+          <motion.input {...inputMotion} className={fieldClassName} placeholder="you@example.com" autoComplete="email" aria-invalid={Boolean(errors.email)} {...register("email")} />
         </FieldShell>
         <FieldShell label="Service" error={errors.service}>
-          <select className={fieldClassName} {...register("service")}>
+          <select className={fieldClassName} aria-invalid={Boolean(errors.service)} {...register("service")}>
             <option value="">Select service</option>
             {services.map((service) => (
               <option key={service.title} value={service.title}>
@@ -527,8 +647,8 @@ function BookingForm() {
             ))}
           </select>
         </FieldShell>
-        <FieldShell label="Doctor" error={errors.doctor}>
-          <select className={fieldClassName} {...register("doctor")}>
+        <FieldShell label="Preferred Doctor" error={errors.doctor}>
+          <select className={fieldClassName} aria-invalid={Boolean(errors.doctor)} {...register("doctor")}>
             <option value="">Select doctor</option>
             {doctors.map((doctor) => (
               <option key={doctor.name} value={doctor.name}>
@@ -538,18 +658,27 @@ function BookingForm() {
           </select>
         </FieldShell>
         <FieldShell label="Date" error={errors.date}>
-          <input type="date" className={fieldClassName} {...register("date")} />
+          <input type="date" className={fieldClassName} aria-invalid={Boolean(errors.date)} {...register("date")} />
         </FieldShell>
         <FieldShell label="Time" error={errors.time}>
-          <input type="time" className={fieldClassName} {...register("time")} />
+          <input type="time" className={fieldClassName} aria-invalid={Boolean(errors.time)} {...register("time")} />
         </FieldShell>
         <FieldShell label="Message" error={errors.message}>
-          <textarea className={cn(fieldClassName, "min-h-32 resize-none py-3")} placeholder="Tell us what you need" {...register("message")} />
+          <textarea className={cn(fieldClassName, "min-h-32 resize-none py-3 sm:min-h-full")} placeholder="Tell us what you need" aria-invalid={Boolean(errors.message)} {...register("message")} />
         </FieldShell>
         <div className="sm:col-span-2">
-          <Button type="submit" className="w-full" disabled={isSubmitting}>
-            {isSubmitting ? "Sending request..." : "Book Appointment"}
-            <ArrowRight className="h-4 w-4" />
+          <Button type="submit" className="w-full" disabled={submitting}>
+            {submitting ? (
+              <>
+                <LoaderCircle className="h-4 w-4 animate-spin" />
+                Sending request
+              </>
+            ) : (
+              <>
+                Book Appointment
+                <ArrowRight className="h-4 w-4" />
+              </>
+            )}
           </Button>
         </div>
       </form>
@@ -573,7 +702,8 @@ export function TestimonialsSection() {
           <div className="flex gap-5">
             {testimonials.map((testimonial) => (
               <article key={testimonial.name} className="min-w-0 flex-[0_0_100%] rounded-[2rem] border border-brand-border bg-white p-7 shadow-soft md:flex-[0_0_50%] lg:flex-[0_0_38%]">
-                <div className="flex items-center gap-4">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex items-center gap-4">
                   <div className="relative h-16 w-16 overflow-hidden rounded-full bg-brand-page">
                     <Image src={testimonial.image} alt={testimonial.name} fill sizes="64px" className="object-cover" />
                   </div>
@@ -581,6 +711,8 @@ export function TestimonialsSection() {
                     <Stars />
                     <h3 className="mt-2 font-black text-brand-ink">{testimonial.name}</h3>
                   </div>
+                  </div>
+                  <Quote className="h-8 w-8 shrink-0 text-brand-blue/20" />
                 </div>
                 <p className="mt-6 text-lg leading-8 text-slate-600">&ldquo;{testimonial.review}&rdquo;</p>
               </article>
@@ -739,7 +871,7 @@ export function ContactSection() {
           <h2 className="heading-2">Visit a studio designed around clarity.</h2>
           <div className="mt-8 grid gap-4">
             {[
-              { icon: MapPin, label: "Address", value: "1288 Meridian Avenue, San Francisco, CA 94109" },
+              { icon: Navigation, label: "Address", value: "1288 Meridian Avenue, San Francisco, CA 94109" },
               { icon: Phone, label: "Phone", value: "+1 415 555 0198" },
               { icon: Mail, label: "Email", value: "hello@luminedental.studio" },
               { icon: Clock3, label: "Hours", value: "Mon-Fri 8:00-18:00, Sat 9:00-14:00" },
